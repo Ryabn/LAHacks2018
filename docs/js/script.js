@@ -1,35 +1,53 @@
 var baseCode;
 var codeMirror;
-var timer;
+var timer, updatePlayers;
 var xhr = new XMLHttpRequest();
 var url = "http://localhost:8080/";
 var gamelink = '123123';
-//var problemSet = {};
+var problemSet = {};
+var allCorrect = true;
 
-var problemSet = {
-    "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
-    "code": "function factorial(intNum){\n\treturn 100;\n}\n",
-    'test': ['factorial(1)', 'factorial(2)', 'factorial(3)', 'factorial(4)', 'factorial(5)', 'factorial(6)', 'factorial(7)', 'factorial(8)', 'factorial(12)'],
-    'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
-}
-
-function enterGame(){
+function enterRoom(){
     gamelink = document.getElementById('game-code').value;
     console.log(gamelink);
     xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
             if (xhr.status === 200) {
-                problemSet = xhr.responseText;
-                console.log(problemSet);
-                start();
+                problemSet = JSON.parse(xhr.responseText);
+                updateWaitingRoom();
             }
         }
     };
     xhr.open("GET", url + "?gamelink=" + gamelink, true);
     xhr.send();
 }
-function start(){
+function updateWaitingRoom(){
     document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('waiting-room').style.display = 'block';
+    updatePlayers = setInterval(function(){
+        xhr.onload = function () {
+            if (xhr.readyState === xhr.DONE) {
+                if (xhr.status === 200) {
+                    var players = JSON.parse(xhr.responseText);
+                    displayWaitingRoom(players);
+                }
+            }
+        };
+        xhr.open("GET", url + "?gamelink=players", true);
+        xhr.send();
+    }, 1000);
+}
+function displayWaitingRoom(){
+    
+}
+
+function enterGame(){
+    document.getElementById('waiting-room').style.display = 'none';
+    clearInterval(updatePlayers);
+    start();
+}
+
+function start(){
     parseProblemData();
     startTimer();
 }
@@ -52,11 +70,9 @@ function parseProblemData(){
     var problemString = problemSet['description'];
     displayProblem(problemString);
     baseCode = problemSet['code'];
-    
     createCodeEditor();
 }
 function createCodeEditor(){
-    console.log("works");
     codeMirror = CodeMirror(document.getElementById('code-editor'), {
         value: baseCode,
         mode:  "javascript",
@@ -68,6 +84,7 @@ function displayProblem(problemString){
     document.getElementById('problem-description').innerHTML = problemString;
 }
 function submitCode(){
+    allCorrect = true;
     document.getElementById('output').innerHTML = '';
     var userSubmission = codeMirror.getValue();
     
@@ -76,6 +93,9 @@ function submitCode(){
         var userOutput = eval(submissionTest);
         checkUserSubmission(userOutput, i, problemSet['test'][i]);
     }
+    if(allCorrect){
+        correctSolution();
+    }
 }
 function checkUserSubmission(userOutput, testNum, userInput){
     
@@ -83,6 +103,7 @@ function checkUserSubmission(userOutput, testNum, userInput){
         setCorrect(userInput, userOutput);
     }else{
         setIncorrect(userInput, userOutput);
+        allCorrect = false;
     }
 }
 function setCorrect(userInput, userOutput){
@@ -92,4 +113,7 @@ function setCorrect(userInput, userOutput){
 function setIncorrect(userInput, userOutput){
     var result = '<div class="resultOutput fail">' + userInput + " -> " + userOutput + '</div>';
     document.getElementById('output').innerHTML += result;
+}
+function correctSolution(){
+    clearInterval(timer);
 }

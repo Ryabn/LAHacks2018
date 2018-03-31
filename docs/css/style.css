@@ -17,7 +17,6 @@ label{
     left: 0;
     font-size: 40px;
     width: 100vw;
-    top: 32vh;
     text-align: center;
 }
 #code-editor{
@@ -35,6 +34,12 @@ label{
     text-align: center;
     color: lightgreen;
     font-size: 10vh;
+}
+.enter-user-name{
+    top: 27vh;
+}
+.enter-game-code{
+    top: 43vh;
 }
 .timer{
     position: fixed;
@@ -56,8 +61,8 @@ label{
 }
 .submit1{
     position: fixed;
-    top: 51vh;
-    left: 41.5vw;
+    top: 60vh;
+    left: 41.8vw;
 }
 .submit2{
     top: 83vh;
@@ -133,6 +138,7 @@ label{
     background-color: #111116;
     
 }
+
 .center-card{
     opacity: 0.9;
     background-color: #ededed;
@@ -143,10 +149,22 @@ label{
     top: calc(50vh - 230px);
     border-radius: 5px;
 }
+#user-name{
+    text-align: center;
+    position: fixed;
+    top: 33.5vh;
+    border-radius: 10px;
+    border: 3px solid #06c600;
+    height: 5vh;
+    left: 40vw;
+    font-size: 23px;
+    padding: 5px;
+    width: calc(20vw - 10px);
+}
 #game-code{
     text-align: center;
     position: fixed;
-    top: 40vh;
+    top: 50vh;
     border-radius: 10px;
     border: 3px solid #06c600;
     height: 5vh;
@@ -163,4 +181,25 @@ label{
     background-color: #171823;
     top: 0;
     left: 0;
+}
+
+#waiting-room{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: #171823;
+    top: 0;
+    left: 0;
+}
+#waiting-room-display{
+    background-color: #13174f;
+    border-radius: 5px;
+    left: 47vw;
+    top: 35vh;
+    border: 1px solid white;
+    position: fixed;
+    height: 45vh;
+    width: 17vw;
+    overflow-y: scroll;
 }

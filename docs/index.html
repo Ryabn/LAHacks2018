@@ -51,11 +51,21 @@
         
         <div id="start-screen">
             <div class="center-card">
-                <label>Enter Game Code:</label>
+                <label class="enter-user-name">Enter User Name:</label>
+                <input id="user-name" type="text">
+                <label class="enter-game-code">Enter Game Code:</label>
                 <input id="game-code" type="text">
-                <div class="submit-button submit1" onclick="start();"> 
+                <div class="submit-button submit1" onclick="enterRoom();"> 
                     <p class="submit-text">Enter</p>
                 </div>
+            </div>
+        </div>
+        <div id="waiting-room">
+            <div id="waiting-room-display">
+            
+            </div>
+            <div class="submit-button submit3" onclick="enterGame();"> 
+                <p class="submit-text">Enter</p>
             </div>
         </div>
     </body>
