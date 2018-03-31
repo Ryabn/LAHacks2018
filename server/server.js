@@ -18,7 +18,8 @@ app.use(function(req, res, next) {
 };
 
 */
-var playerList = {};
+var playerList = {
+};
 var problemSet = {
     "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
     "code": "function factorial(intNum){\n\treturn 100;\n}\n",
@@ -26,30 +27,37 @@ var problemSet = {
     'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
 }
 app.get('/', function(req, res){
-    returnProblemSet(req, res);
+    console.log(JSON.stringify(playerList));
+    parseUserAction(req, res);
+    //returnProblemSet(req, res);
 });
 
 function parseUserAction(req, res){
-    if(playerList.hasOwnProperty(req.query.gamelink)){
-        if(req.query.getInfo == 'players'){
-            res.send(playerList);
-        }
-    }else{
+    var emptyTime = '--:--:--';
+    if(req.query.getInfo == 'host'){
         var gameData = {
-            "gameCode": 123123,
             "gameDetails": [{
-                "players":[]
+                "players":[req.query.playerName]
             },
             {
-                "completionTime": []
+                "completionTime": [emptyTime]
             }]
         };
-        playerList += gameData;
+        var randomString = '123123';
+        playerList[randomString] = gameData;
+        res.send(playerList);
+    }else if(req.query.getInfo == 'addPlayer'){
+        playerList[req.query.gamelink]['gameDetails']['players'].push(req.query.playerName);
+        playerList[req.query.gamelink]['gameDetails']['completionTime'].push(emptyTime);
+        res.send(playerList);
+    }else if(req.query.getInfo == 'players'){
+        console.log(playerList[req.query.gamelink]['gameDetails'][0]['players']);
+        res.send(playerList[req.query.gamelink]['gameDetails'][0]['players']);
     }
    
 }
 
-function returnProblemSet(res){
+function returnProblemSet(req, res){
     res.send(problemSet);
 }
 
