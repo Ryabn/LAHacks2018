@@ -69,7 +69,6 @@ function parseUserAction(req, res){
         playerList[req.query.gamelink]['gameDetails'][2]['start'] = true;
         var randNum = Math.floor(Math.random() * 3);
         problemSet = problemSetCollection['problem'][randNum];
-        console.log(problemSet);
         playerList[req.query.gamelink]['gameDetails'].push(problemSet);
     }else if(req.query.getInfo == 'complete'){
         for(i = 0; i <  playerList[req.query.gamelink]['gameDetails'][0]['players'].length; i++){
