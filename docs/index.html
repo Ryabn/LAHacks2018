@@ -6,12 +6,39 @@
         <title>
             Code Challenge
         </title>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
-    </head>
-    <body>
-        <h1> Code Challenge </h1>
         
+        <!-- google fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+        
+        <!-- code mirror -->
+        <link rel="stylesheet" href="css/codemirror.css">
+        <link rel="stylesheet" href="css/base16-dark.css">
+        <script src="js/codemirror.js"></script>
+        <script src="js/javascript.js"></script>
+        
+        <!-- personal -->
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="js/script.js"></script>
+    </head>
+    
+    <body onload="load();">
+        <h1> Code Challenge </h1>
+        <div class="description">
+            <p id="problem-description">
+            </p>
+        </div>
+        <div id="code-editor">    
+        </div>
+        
+        <div class="output-box">
+            <div id="output">
+            
+            </div>
+        </div>
+        
+        <div class="submit-button" onclick="submitCode();">
+            <p class="submit-text">Submit</p>
+        </div>
         
         <div class="credits">
             designed by ryan yang

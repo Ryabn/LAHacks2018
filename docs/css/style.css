@@ -5,7 +5,87 @@ body{
 }
 h1{
     color: white;
+    font-size: 60px;
     text-align: center;
+    margin: 2vh;
+}
+p{
+    margin: 0;
+}
+#code-editor{
+    position: fixed;
+    top: 35vh;
+    left: 2vw;
+    width: 42.5vw;
+    border: 5px solid #aaaab7;
+}
+
+#problem-description{
+    font-size: 24px;
+    color: white;
+}
+.submit-button{
+    background-color: #4bba2c;
+    border-radius: 5px;
+    position: fixed;
+    padding-top: 10px;
+    top: 83vh;
+    left: 47vw;
+    height: calc(8.5vh - 5px);
+    width: 17vw;
+}
+.submit-button:hover{
+    padding-top: 5px;
+    height: calc(8.5vh - 10px);
+    width: calc(17vw - 10px);
+    border: 5px solid #bf9ddb;
+}
+.submit-button:active{
+    padding-top: 5px;
+    height: calc(8.5vh - 10px);
+    width: calc(17vw - 10px);
+    border: 5px solid #7c32bc;
+}
+.submit-text{
+    color: white;
+    margin: 15px;
+    text-align: center;
+    font-size: 25px;
+}
+.description{
+    padding: 1vw;
+    border: 1px solid white;
+    width: 60vw;
+    height: 16vh;
+    overflow-y: scroll; 
+    margin-left: 2vw;
+}
+.output-box{
+    background-color: #13174f;
+    border-radius: 5px;
+    left: 47vw;
+    top: 35vh;
+    border: 1px solid white;
+    position: fixed;
+    height: 45vh;
+    width: 17vw;
+    overflow-y: scroll;
+}
+.resultOutput{
+    padding: 20px;
+    height: 20px; 
+    border-bottom: 1px solid white;
+}
+.success{
+    background-color: #67bf5d;
+}
+.fail{
+    background-color: #a82a2a;
+}
+.CodeMirror{
+    font-size: 22px;
+    padding: 5px;
+    height: calc(56vh - 10px);
 }
 .credits{
     text-align: center;
