@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+    background-color: #171823;
+    font-family: 'Questrial', sans-serif;
+}
+h1{
+    color: white;
+    text-align: center;
+}
+.credits{
+    text-align: center;
+    position: fixed;
+    top: 95vh;
+    height: 4vh;
+    width: 100vw;
+    padding-top: 1vh;
+    font-size: 3vh;
+    color: #aaaab7;
+    background-color: #111116;
+    
+}
