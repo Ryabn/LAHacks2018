@@ -3,46 +3,60 @@ var codeMirror;
 var timer;
 var xhr = new XMLHttpRequest();
 var url = "http://localhost:8080/";
-var gamelink;
+var gamelink = '123123';
+//var problemSet = {};
 
-var problemSet = {};
+var problemSet = {
+    "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
+    "code": "function factorial(intNum){\n\treturn 100;\n}\n",
+    'test': ['factorial(1)', 'factorial(2)', 'factorial(3)', 'factorial(4)', 'factorial(5)', 'factorial(6)', 'factorial(7)', 'factorial(8)', 'factorial(12)'],
+    'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
+}
 
 function enterGame(){
-     xhr.onload = function () {
+    gamelink = document.getElementById('game-code').value;
+    console.log(gamelink);
+    xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
             if (xhr.status === 200) {
                 problemSet = xhr.responseText;
-                
+                console.log(problemSet);
+                start();
             }
         }
     };
     xhr.open("GET", url + "?gamelink=" + gamelink, true);
     xhr.send();
 }
-
-function load(){
+function start(){
+    document.getElementById('start-screen').style.display = 'none';
+    parseProblemData();
     startTimer();
-    //parseProblemData();
 }
 function startTimer(){
-    
-    
+    var date = Date.now();
     timer = setInterval(function(){
-        displayTime();
+        displayTime(date);
     }, 10);
 }
-function displayTime(){
-    var date = Date.now();
-    document.getElementById('time').innerHTML = date%10000000;
-        
+function displayTime(date){
+    var timeElapsed = Date.now() - date;
+    var minutes = parseInt(timeElapsed/60000);
+    timeElapsed %= 60000;
+    var seconds = parseInt(timeElapsed/1000);
+    timeElapsed %= 1000;
+    var milliseconds = parseInt(timeElapsed/10);
+    document.getElementById('time').innerHTML = (minutes < 10 ? '0' + minutes : minutes) + ":" + (seconds < 10 ? '0' + seconds : seconds) + ":" + (milliseconds < 10 ? '0' + milliseconds : milliseconds);
 }
 function parseProblemData(){
     var problemString = problemSet['description'];
     displayProblem(problemString);
     baseCode = problemSet['code'];
+    
     createCodeEditor();
 }
 function createCodeEditor(){
+    console.log("works");
     codeMirror = CodeMirror(document.getElementById('code-editor'), {
         value: baseCode,
         mode:  "javascript",

@@ -21,7 +21,7 @@
         <script src="js/script.js"></script>
     </head>
     
-    <body onload="load();">
+    <body>
         <h1> Code Challenge </h1>
         <div class="description">
             <p id="problem-description">
@@ -41,12 +41,22 @@
             </div>
         </div>
         
-        <div class="submit-button" onclick="submitCode();">
+        <div class="submit-button submit2" onclick="submitCode();">
             <p class="submit-text">Submit</p>
         </div>
         
         <div class="credits">
             designed by ryan yang
+        </div>
+        
+        <div id="start-screen">
+            <div class="center-card">
+                <label>Enter Game Code:</label>
+                <input id="game-code" type="text">
+                <div class="submit-button submit1" onclick="start();"> 
+                    <p class="submit-text">Enter</p>
+                </div>
+            </div>
         </div>
     </body>
 </html>

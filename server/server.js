@@ -15,13 +15,11 @@ var problemSet = {
     'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
 }
 app.get('/', function(req, res){
-    
-    res.send("woooo");
+    returnProblemSet(res);
 });
 
-function returnProblemSet(){
-    
-    
+function returnProblemSet(res){
+    res.send(problemSet);
 }
 
 const server = app.listen(8080, () => {
