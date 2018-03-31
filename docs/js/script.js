@@ -4,7 +4,7 @@ var timer, updatePlayers;
 var xhr = new XMLHttpRequest();
 var url = "http://localhost:8080/";
 //var url = 'https://code-challenge-199714.appspot.com';
-var gamelink = '123123', playerName = 'guest', ishost = false;
+var gamelink = 'w3cx89p', playerName = 'guest', ishost = false;
 var problemSet = {}, playerList;
 var allCorrect = true;
 
@@ -22,7 +22,7 @@ function enterRoom(){
     if(gamelink == "host"){
         xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=host", true);
         xhr.send();
-        gamelink = '123123';
+        gamelink = 'w3cx89p';
         ishost = true;
     }else{
         xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=addPlayer", true);
@@ -32,6 +32,10 @@ function enterRoom(){
 function updateWaitingRoom(){
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('waiting-room').style.display = 'block';
+    if(!ishost){
+        document.getElementById('hostbutton').style.backgroundColor = 'grey';
+        document.getElementById('ishostbutton').innerHTML = 'Waiting for host...';
+    }
     updatePlayers = setInterval(function(){
         xhr.onload = function () {
             if (xhr.readyState === xhr.DONE) {
