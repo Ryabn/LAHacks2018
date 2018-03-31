@@ -19,10 +19,24 @@ p{
     width: 42.5vw;
     border: 5px solid #aaaab7;
 }
-
 #problem-description{
     font-size: 24px;
     color: white;
+}
+#time{
+    text-align: center;
+    color: lightgreen;
+    font-size: 10vh;
+}
+.timer{
+    position: fixed;
+    height: 15vh;
+    border-radius: 5px;
+    padding-top: 5vh;
+    left: 66vw;
+    top: calc(62px + 4vh);
+    width: 31.5vw;
+    border: 1px solid white;
 }
 .submit-button{
     background-color: #4bba2c;
@@ -53,7 +67,8 @@ p{
     font-size: 25px;
 }
 .description{
-    padding: 1vw;
+    border-radius: 5px;
+    padding: 2vh;
     border: 1px solid white;
     width: 60vw;
     height: 16vh;
@@ -81,6 +96,10 @@ p{
 }
 .fail{
     background-color: #a82a2a;
+}
+.standard{
+    text-align: center;
+    background-color: aliceblue;
 }
 .CodeMirror{
     font-size: 22px;

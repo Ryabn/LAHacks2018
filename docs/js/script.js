@@ -1,24 +1,47 @@
 var baseCode;
 var codeMirror;
+var timer;
+var xhr = new XMLHttpRequest();
+var url = "http://localhost:8080/";
+var gamelink;
 
-var problemSet = {
-    "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
-    "code": "function factorial(intNum){\n\treturn 100;\n}\n",
-    'test': ['factorial(1)', 'factorial(2)', 'factorial(3)', 'factorial(4)', 'factorial(5)', 'factorial(6)', 'factorial(7)', 'factorial(8)', 'factorial(12)'],
-    'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
+var problemSet = {};
+
+function enterGame(){
+     xhr.onload = function () {
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status === 200) {
+                problemSet = xhr.responseText;
+                
+            }
+        }
+    };
+    xhr.open("GET", url + "?gamelink=" + gamelink, true);
+    xhr.send();
 }
 
 function load(){
-    parseProblemData();
+    startTimer();
+    //parseProblemData();
 }
-
+function startTimer(){
+    
+    
+    timer = setInterval(function(){
+        displayTime();
+    }, 10);
+}
+function displayTime(){
+    var date = Date.now();
+    document.getElementById('time').innerHTML = date%10000000;
+        
+}
 function parseProblemData(){
     var problemString = problemSet['description'];
     displayProblem(problemString);
     baseCode = problemSet['code'];
     createCodeEditor();
 }
-
 function createCodeEditor(){
     codeMirror = CodeMirror(document.getElementById('code-editor'), {
         value: baseCode,
