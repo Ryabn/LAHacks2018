@@ -33,20 +33,21 @@ function updateWaitingRoom(){
                 }
             }
         };
-        xhr.open("GET", url + "?gamelink=players", true);
+        xhr.open("GET", url + "?gamelink=" + gamelink + "&getInfo=players", true);
         xhr.send();
     }, 1000);
 }
-function displayWaitingRoom(){
-    
+function displayWaitingRoom(players){
+    document.getElementById('waiting-room-display').innerHTML = "";
+    for(i = 0; i < players.length; i++){
+        document.getElementById('waiting-room-display').innerHTML += '<div class="guestNames">' + players[i] + '</div>';
+    }
 }
-
 function enterGame(){
     document.getElementById('waiting-room').style.display = 'none';
     clearInterval(updatePlayers);
     start();
 }
-
 function start(){
     parseProblemData();
     startTimer();

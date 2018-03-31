@@ -141,13 +141,14 @@ label{
 
 .center-card{
     opacity: 0.9;
-    background-color: #ededed;
+    background-color: #dbdfff;
     height: 400px;
     width: 500px;
     position: fixed;
-    left: calc(50vw - 250px);
-    top: calc(50vh - 230px);
+    left: calc(50vw - 255px);
+    top: calc(50vh - 235px);
     border-radius: 5px;
+    border: 10px solid white;
 }
 #user-name{
     text-align: center;
@@ -193,13 +194,22 @@ label{
     left: 0;
 }
 #waiting-room-display{
-    background-color: #13174f;
+    background-color: #dbdfff;
     border-radius: 5px;
-    left: 47vw;
-    top: 35vh;
-    border: 1px solid white;
+    left: 35vw;
+    top: 15vh;
+    border: 10px solid white;
     position: fixed;
-    height: 45vh;
-    width: 17vw;
+    height: 70vh;
+    width: 30vw;
     overflow-y: scroll;
+}
+.guestNames{
+    height: 50px;
+    background-color: #dbdfff;
+    border-bottom: 10px solid white;
+}
+.submit3{
+    left: 41.8vw;
+    top: 74vh;
 }

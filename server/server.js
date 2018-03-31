@@ -7,7 +7,18 @@ app.use(function(req, res, next) {
     next();
 });
 
+/*
+{
+    "gameCode": 123123,
+    "gameDetails": [{
+        "players":[]
+    },{
+        "completionTime": []
+    }]
+};
 
+*/
+var playerList = {};
 var problemSet = {
     "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
     "code": "function factorial(intNum){\n\treturn 100;\n}\n",
@@ -15,8 +26,28 @@ var problemSet = {
     'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
 }
 app.get('/', function(req, res){
-    returnProblemSet(res);
+    returnProblemSet(req, res);
 });
+
+function parseUserAction(req, res){
+    if(playerList.hasOwnProperty(req.query.gamelink)){
+        if(req.query.getInfo == 'players'){
+            res.send(playerList);
+        }
+    }else{
+        var gameData = {
+            "gameCode": 123123,
+            "gameDetails": [{
+                "players":[]
+            },
+            {
+                "completionTime": []
+            }]
+        };
+        playerList += gameData;
+    }
+   
+}
 
 function returnProblemSet(res){
     res.send(problemSet);
