@@ -2,8 +2,8 @@ var baseCode;
 var codeMirror;
 var timer, updatePlayers;
 var xhr = new XMLHttpRequest();
-//var url = "http://localhost:8080/";
-var url = 'https://code-challenge-199714.appspot.com';
+var url = "http://localhost:8080/";
+//var url = 'https://code-challenge-199714.appspot.com';
 var gamelink = '123123', playerName = 'guest', ishost = false;
 var problemSet = {}, playerList;
 var allCorrect = true;
@@ -48,6 +48,7 @@ function updateWaitingRoom(){
 function displayWaitingRoom(players){
     if(players[gamelink]["gameDetails"][2]["start"]){
         problemSet = players[gamelink]['gameDetails'][3];
+        playerList = players;
         start();
     }else{
         document.getElementById('waiting-room-display').innerHTML = "";
@@ -75,6 +76,9 @@ function start(){
     clearInterval(updatePlayers);
     parseProblemData();
     startTimer();
+    updatePlayers = setInterval(function(){
+        updateScoreboard();
+    }, 1000);
 }
 function startTimer(){
     var date = Date.now();
@@ -93,7 +97,7 @@ function displayTime(date){
 }
 function parseProblemData(){
     var problemString = problemSet['description'];
-    displayProblem(problemString);
+    displayProblem("Challenge: " + problemString);
     baseCode = problemSet['code'];
     createCodeEditor();
 }
@@ -123,7 +127,6 @@ function submitCode(){
     }
 }
 function checkUserSubmission(userOutput, testNum, userInput){
-    
     if(userOutput == problemSet['solution'][testNum]){
         setCorrect(userInput, userOutput);
     }else{
@@ -140,5 +143,26 @@ function setIncorrect(userInput, userOutput){
     document.getElementById('output').innerHTML += result;
 }
 function correctSolution(){
+    xhr.onload = function () {
+        if (xhr.readyState === xhr.DONE) {
+            if (xhr.status === 200) {
+                playerList = JSON.parse(xhr.responseText);
+                updateScoreboard();
+            }
+        }
+    };
+    xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=complete" + "&completedTime=" + document.getElementById('time').innerHTML, true);
+    xhr.send();
     clearInterval(timer);
+    updateScoreboard();
+    clearInterval(updatePlayers);
+}
+function updateScoreboard(){
+    
+    document.getElementById('scoreboard').innerHTML = '<div class="scoreboard-title"> Scoreboard </div>';
+    for(i = 0; i < playerList[gamelink]['gameDetails'][0]['players'].length; i++){
+        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-names">' + playerList[gamelink]['gameDetails'][0]['players'][i] + '</div>';
+        
+        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-times">' + playerList[gamelink]['gameDetails'][1]['completionTime'][i] + '</div>';
+    }
 }

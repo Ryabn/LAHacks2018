@@ -7,19 +7,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-/*
-{
-    "gameCode": 123123,
-    "gameDetails": [{
-        "players":[]
-    },{
-        "completionTime": []
-    }]
-};
-
-*/
-var playerList = {
-};
+var playerList = {};
 var problemSet = {
     "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
     "code": "function factorial(intNum){\n\treturn 100;\n}\n",
@@ -29,7 +17,6 @@ var problemSet = {
 app.get('/', function(req, res){
     console.log(JSON.stringify(playerList));
     parseUserAction(req, res);
-    //returnProblemSet(req, res);
 });
 
 function parseUserAction(req, res){
@@ -48,23 +35,22 @@ function parseUserAction(req, res){
         };
         var randomString = '123123';
         playerList[randomString] = gameData;
-        res.send(playerList);
     }else if(req.query.getInfo == 'addPlayer'){
         playerList[req.query.gamelink]['gameDetails'][0]['players'].push(req.query.playerName);
         playerList[req.query.gamelink]['gameDetails'][1]['completionTime'].push(emptyTime);
-        res.send(playerList);
     }else if(req.query.getInfo == 'players'){
         console.log(playerList[req.query.gamelink]['gameDetails'][0]['players']);
-        res.send(playerList);
-    }else if(req.query.getInfo == "start"){
+    }else if(req.query.getInfo == 'start'){
         playerList[req.query.gamelink]['gameDetails'][2]['start'] = true;
         playerList[req.query.gamelink]['gameDetails'].push(problemSet);
-        res.send(playerList);
+    }else if(req.query.getInfo == 'complete'){
+        for(i = 0; i <  playerList[req.query.gamelink]['gameDetails'][0]['players'].length; i++){
+            if(playerList[req.query.gamelink]['gameDetails'][0]['players'][i] == req.query.playerName){
+                playerList[req.query.gamelink]['gameDetails'][1]['completionTime'][i] = req.query.completedTime;
+            }
+        }
     }
-}
-
-function returnProblemSet(req, res){
-    res.send(problemSet);
+    res.send(playerList);
 }
 
 const server = app.listen(8080, () => {
