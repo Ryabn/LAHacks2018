@@ -41,20 +41,26 @@ function parseUserAction(req, res){
             },
             {
                 "completionTime": [emptyTime]
+            },
+            {
+                "start": false
             }]
         };
         var randomString = '123123';
         playerList[randomString] = gameData;
         res.send(playerList);
     }else if(req.query.getInfo == 'addPlayer'){
-        playerList[req.query.gamelink]['gameDetails']['players'].push(req.query.playerName);
-        playerList[req.query.gamelink]['gameDetails']['completionTime'].push(emptyTime);
+        playerList[req.query.gamelink]['gameDetails'][0]['players'].push(req.query.playerName);
+        playerList[req.query.gamelink]['gameDetails'][1]['completionTime'].push(emptyTime);
         res.send(playerList);
     }else if(req.query.getInfo == 'players'){
         console.log(playerList[req.query.gamelink]['gameDetails'][0]['players']);
-        res.send(playerList[req.query.gamelink]['gameDetails'][0]['players']);
+        res.send(playerList);
+    }else if(req.query.getInfo == "start"){
+        playerList[req.query.gamelink]['gameDetails'][2]['start'] = true;
+        playerList[req.query.gamelink]['gameDetails'].push(problemSet);
+        res.send(playerList);
     }
-   
 }
 
 function returnProblemSet(req, res){
