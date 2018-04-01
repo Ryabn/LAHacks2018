@@ -218,7 +218,11 @@ function nextGame(){
     }, 3000);
     setTimeout(function(){
         document.getElementById('output').innerHTML = '<div class="resultOutput standard"> Output displayed here</div>';
-        xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=newproblem", true);
+        if(ishost){
+             xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=newproblem", true);
+        }else{
+            xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=players", true);
+        }
         xhr.send();  
         updateWaitingRoom();
     }, 8000);

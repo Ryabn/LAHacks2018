@@ -52,8 +52,6 @@ var problemSet = problemSetCollection['problem'][0];
 
 //print playerList every time api call made and 
 app.get('/', function(req, res){
-    console.log(JSON.stringify(playerList, null, 2));
-    console.log("\n\n================================\n\n\n\n");
     parseUserAction(req, res);
 });
 
@@ -118,7 +116,7 @@ function addPlayer(req, res){
 }
 function startGame(req, res){
     playerList[req.query.gamelink]['gameDetails'][3]['start'] = true;
-    problemSet = problemSetCollection['problem'][2];
+    problemSet = problemSetCollection['problem'][0];
     playerList[req.query.gamelink]['gameDetails'].push(problemSet);
     playerList[req.query.gamelink]['gameDetails'].push({'problemNum': 0});
     res.send(playerList[req.query.gamelink]['gameDetails']);
