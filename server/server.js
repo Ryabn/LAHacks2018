@@ -1,12 +1,19 @@
 const express = require('express');
 const app = express();
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+var emptyTime = '--:--:--';
 
+//cors
+app.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
+//data var
+var playerList = {};
+
+//problem set
 var problemSetCollection = {
     'problem': [
         {
@@ -16,39 +23,75 @@ var problemSetCollection = {
             'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
         },
         {
-            "description": "We have a number of bunnies and each bunny has two big floppy ears. We want to compute the total number of ears across all the bunnies recursively (without loops or multiplication).",
-            "code": "function bunnyEars(bunnies){\n\treturn 100;\n}\n",
-            'test': ['bunnyEars(0)', 'bunnyEars(1)', 'bunnyEars(2)', 'bunnyEars(3)', 'bunnyEars(4)', 'bunnyEars(5)', 'bunnyEars(12)', 'bunnyEars(50)', 'bunnyEars(234)'],
-            'solution': [0, 2, 4, 6, 8, 10, 24, 100, 468]
-        },
-        {
             "description": "The fibonacci sequence is a famous bit of mathematics, and it happens to have a recursive definition. The first two values in the sequence are 0 and 1 (essentially 2 base cases). Each subsequent value is the sum of the previous two values, so the whole sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21 and so on. Define a recursive fibonacci(n) method that returns the nth fibonacci number, with n=0 representing the start of the sequence.",
             "code": "function fibonacci(n){\n\treturn 0;\n}\n",
             'test': ['fibonacci(0)', 'fibonacci(1)', 'fibonacci(2)', 'fibonacci(3)', 'fibonacci(4)', 'fibonacci(5)', 'fibonacci(6)', 'fibonacci(7)', 'fibonacci(10)'],
             'solution': [0, 1, 1, 2, 3, 5, 8, 13, 55]
         },
         {
-            "description": "Given n of 1 or more, return the factorial of n, which is n * (n-1) * (n-2) ... 1. Compute the result recursively (without loops).",
-            "code": "function factorial(intNum){\n\treturn 100;\n}\n",
-            'test': ['factorial(1)', 'factorial(2)', 'factorial(3)', 'factorial(4)', 'factorial(5)', 'factorial(6)', 'factorial(7)', 'factorial(8)', 'factorial(12)'],
-            'solution': [1, 2, 6, 24, 120, 720, 5040, 40320, 479001600]
+            "description": "Given a string, return true if 'bad' appears starting at index 0 or 1 in the string, such as with 'badxxx' or 'xbadxx' but not 'xxbadxx'. The string may be any length, including 0. Note: use .equals() to compare 2 strings.",
+            "code": "function hasBad(str){\n\treturn false;\n}\n",
+            'test': ['hasBad("badxx")', 'hasBad("xbadxx")', 'hasBad("xxbadxx")', 'hasBad("code")', 'hasBad("bad")', 'hasBad("ba")', 'hasBad("xba")', 'hasBad("xbad") ', 'hasBad("")', 'hasBad("badyy")'],
+            'solution': [true, true, false, false, true, false, false, true, false, true]
+        },
+        {
+            "description": "We want make a package of goal kilos of chocolate. We have small bars (1 kilo each) and big bars (5 kilos each). Return the number of small bars to use, assuming we always use big bars before small bars. Return -1 if it can't be done. \nExample: \n\nmakeChocolate(4, 1, 9) → 4 \n\nmakeChocolate(4, 1, 10) → -1 \n\nmakeChocolate(4, 1, 7) → 2",
+            "code": "function makeChocolate(small, big, goal{\n\treturn -1;\n}\n",
+            'test': ['makeChocolate(4, 1, 9)', 'makeChocolate(4, 1, 10)', 'makeChocolate(4, 1, 7)', 'makeChocolate(4, 1, 5)', 'makeChocolate(6, 1, 11)', 'makeChocolate(60, 100, 550)', 'makeChocolate(7, 1, 12)', 'makeChocolate(1, 2, 5)', 'makeChocolate(6, 1, 12)'],
+            'solution': [4, -1, 2, 0, 6, 50, 7, 0, -1]
         }
     ]
 };
+var problemSet = problemSetCollection['problem'][0];
 
-var playerList = {};
-var problemSet = problemSetCollection['problem'][2];
-
+//print playerList every time api call made and 
 app.get('/', function(req, res){
-    console.log(JSON.stringify(playerList));
+    console.log(JSON.stringify(playerList, null, 2));
+    console.log("\n\n================================\n\n\n\n");
     parseUserAction(req, res);
 });
 
 function parseUserAction(req, res){
-    var emptyTime = '--:--:--';
-    if(req.query.getInfo == 'host'){
-        var gameData = {
+    var userAction = req.query.getInfo;
+    switch(userAction){
+        case 'host':
+            createHost(req, res);
+            break;
+        case 'addPlayer':
+             addPlayer(req, res);
+            break;
+        case 'start':
+            startGame(req, res);
+            break;
+        case 'complete':
+            finishedGame(req, res);
+            break;
+        case 'clearservers':
+            playerList = {};
+            break;
+        case 'newproblem':
+            resetGame(req, res);
+            break;
+        default:
+            res.send(playerList[req.query.gamelink]['gameDetails']);
+            break;
+    }
+}
+function resetGame(req, res){
+    var problemNum = playerList[req.query.gamelink]['gameDetails'][5]['problemNum'];
+    problemNum += 1;
+    playerList[req.query.gamelink]['gameDetails'][5]['problemNum'] = problemNum;
+    problemSet = problemSetCollection['problem'][problemNum];
+    playerList[req.query.gamelink]['gameDetails'][4] = problemSet;
+    playerList[req.query.gamelink]['gameDetails'][2]['completionTime'].fill(emptyTime);
+}
+function createHost(req, res){
+    var randomString = makeid();
+    var gameData = {
             "gameDetails": [{
+                "gameID": randomString
+            },
+                            {
                 "players":[req.query.playerName]
             },
             {
@@ -58,30 +101,43 @@ function parseUserAction(req, res){
                 "start": false
             }]
         };
-        var randomString = 'w3cx89p';
-        playerList[randomString] = gameData;
-    }else if(req.query.getInfo == 'addPlayer'){
-        playerList[req.query.gamelink]['gameDetails'][0]['players'].push(req.query.playerName);
-        playerList[req.query.gamelink]['gameDetails'][1]['completionTime'].push(emptyTime);
-    }else if(req.query.getInfo == 'players'){
-        console.log(playerList[req.query.gamelink]['gameDetails'][0]['players']);
-    }else if(req.query.getInfo == 'start'){
-        playerList[req.query.gamelink]['gameDetails'][2]['start'] = true;
-        var randNum = Math.floor(Math.random() * 3);
-        problemSet = problemSetCollection['problem'][randNum];
-        playerList[req.query.gamelink]['gameDetails'].push(problemSet);
-    }else if(req.query.getInfo == 'complete'){
-        for(i = 0; i <  playerList[req.query.gamelink]['gameDetails'][0]['players'].length; i++){
-            if(playerList[req.query.gamelink]['gameDetails'][0]['players'][i] == req.query.playerName){
-                playerList[req.query.gamelink]['gameDetails'][1]['completionTime'][i] = req.query.completedTime;
-            }
+    
+    playerList[randomString] = gameData;
+    res.send(playerList[randomString]['gameDetails']);
+}
+function addPlayer(req, res){
+    playerList[req.query.gamelink]['gameDetails'][1]['players'].push(req.query.playerName);
+    playerList[req.query.gamelink]['gameDetails'][2]['completionTime'].push(emptyTime);
+    res.send(playerList[req.query.gamelink]['gameDetails']);
+}
+function startGame(req, res){
+    playerList[req.query.gamelink]['gameDetails'][3]['start'] = true;
+    problemSet = problemSetCollection['problem'][3];
+    playerList[req.query.gamelink]['gameDetails'].push(problemSet);
+    playerList[req.query.gamelink]['gameDetails'].push({'problemNum': 0});
+    res.send(playerList[req.query.gamelink]['gameDetails']);
+}
+function finishedGame(req, res){
+    playerList[req.query.gamelink]['gameDetails'][3]['start'] = false;
+    for(let i = 0; i < playerList[req.query.gamelink]['gameDetails'][1]['players'].length; i++){
+        if(playerList[req.query.gamelink]['gameDetails'][1]['players'][i] == req.query.playerName){
+            console.log(playerList[req.query.gamelink]['gameDetails'][1]['players'][i], req.query.playerName);
+            playerList[req.query.gamelink]['gameDetails'][2]['completionTime'][i] = req.query.completedTime;
         }
     }
-    res.send(playerList);
+    res.send(playerList[req.query.gamelink]['gameDetails']);
+}
+function makeid(){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < 5; i++){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
 }
 
 const server = app.listen(8080, () => {
     const host = server.address().address;
     const port = server.address().port;
-    console.log(`Example app listening at http://${host}:${port}`);
+    console.log(`Code Challenge running at http://${host}:${port}`);
 });
