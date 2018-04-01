@@ -2,8 +2,8 @@ var baseCode;
 var codeMirror;
 var timer, updatePlayers, checkForFinish;
 var xhr = new XMLHttpRequest();
-var url = "http://localhost:8080/";
-//var url = 'https://code-challenge-199714.appspot.com';
+//var url = "http://localhost:8080/";
+var url = 'https://code-challenge-199714.appspot.com';
 var gamelink, playerName = 'guest', ishost = false;
 var problemSet = {}, playerList, created = false;
 var allCorrect = true;
@@ -192,6 +192,7 @@ function updateScoreboard(){
 }
 function waitForNextGame(){
     checkForFinish = setInterval(function(){
+        updateScoreboard();
         checkDone();
     }, 1000);
 }
@@ -213,9 +214,12 @@ function checkDone(){
 function nextGame(){
     created = true;
     setTimeout(function(){
+        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-title"> All players finished! Back to lobby in 5 seconds... </div>';
+    }, 3000);
+    setTimeout(function(){
         document.getElementById('output').innerHTML = '<div class="resultOutput standard"> Output displayed here</div>';
         xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=newproblem", true);
         xhr.send();  
         updateWaitingRoom();
-    }, 5000);
+    }, 8000);
 }
