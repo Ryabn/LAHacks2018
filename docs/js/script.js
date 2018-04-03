@@ -163,6 +163,7 @@ function correctSolution(){
             if (newxhr.status === 200) {
                 playerList = JSON.parse(newxhr.responseText);
                 updateScoreboard();
+                console.log('sdf');
             }
         }
     };
