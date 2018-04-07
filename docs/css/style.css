@@ -13,9 +13,10 @@ p{
     margin: 0;
 }
 label{
+    font-family: 'Source Code Pro', monospace;
     position: fixed;
     left: 0;
-    font-size: 40px;
+    font-size: 25px;
     width: 100vw;
     text-align: center;
 }
@@ -71,10 +72,20 @@ label{
     text-align: center;
 }
 .enter-user-name{
-    top: 27vh;
+    position: inherit;
+    margin-top: 105px;
 }
 .enter-game-code{
-    top: 43vh;
+    position: inherit;
+    margin-top: 210px;
+}
+.logo{
+    font-family: 'Source Sans Pro', sans-serif;
+    text-align: center;
+    width: inherit;
+    margin-top: 15px;
+    font-size: 65px;
+    position: inherit;
 }
 .timer{
     position: fixed;
@@ -95,9 +106,16 @@ label{
     height: calc(8.5vh - 5px);
 }
 .submit1{
+    
+    padding-top: 15px;
+    position: inherit;
+    margin-top: 320px;
+    margin-left: 140px;
+    height: 45px;
+    background-color: #4bba2c;
+    border-radius: 5px;
     position: fixed;
-    top: 60vh;
-    left: 41.8vw;
+    width: 220px;
 }
 .submit2{
     top: 83vh;
@@ -115,9 +133,20 @@ label{
     width: calc(17vw - 10px);
     border: 5px solid #7c32bc;
 }
+.submit1:hover{
+    padding-top: 10px;
+    height: 40px;
+    width: 210px;
+    border: 5px solid #bf9ddb;
+}
+.submit1:active{
+    padding-top: 10px;
+    height: 40px;
+    width: 210px;
+    border: 5px solid #7c32bc;
+}
 .submit-text{
     color: white;
-    margin: 15px;
     text-align: center;
     font-size: 25px;
 }
@@ -166,6 +195,7 @@ label{
     position: fixed;
     top: 95vh;
     height: 4vh;
+    z-index: 5;
     width: 100vw;
     padding-top: 1vh;
     font-size: 3vh;
@@ -175,7 +205,6 @@ label{
 }
 
 .center-card{
-    opacity: 0.9;
     background-color: #dbdfff;
     height: 400px;
     width: 500px;
@@ -187,27 +216,27 @@ label{
 }
 #user-name{
     text-align: center;
-    position: fixed;
-    top: 33.5vh;
+    position: inherit;
+    margin-top: 145px;
     border-radius: 10px;
-    border: 3px solid #06c600;
-    height: 5vh;
-    left: 40vw;
+    border: 3px solid #3a3759;
+    height: 40px;
+    margin-left: 92px;
     font-size: 23px;
     padding: 5px;
-    width: calc(20vw - 10px);
+    width: 300px;
 }
 #game-code{
     text-align: center;
-    position: fixed;
-    top: 50vh;
+    position: inherit;
+    margin-top: 250px;
     border-radius: 10px;
-    border: 3px solid #06c600;
-    height: 5vh;
-    left: 40vw;
+    border: 3px solid #3a3759;
+    height: 40px;
+    margin-left: 92px;
     font-size: 23px;
     padding: 5px;
-    width: calc(20vw - 10px);
+    width: 300px;
 }
 #start-screen{
     display: block;
@@ -215,6 +244,7 @@ label{
     height: 100vh;
     width: 100vw;
     background-color: #171823;
+    background: linear-gradient(140deg, #171823, #3a3759, #8110ba, #482b68);
     top: 0;
     left: 0;
 }
