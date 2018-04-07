@@ -255,6 +255,7 @@ label{
     height: 100vh;
     width: 100vw;
     background-color: #171823;
+    background: linear-gradient(140deg, #171823, #3a3759, #8110ba, #482b68);
     top: 0;
     left: 0;
 }
