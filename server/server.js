@@ -5,15 +5,15 @@ var emptyTime = '--:--:--';
 
 //cors
 app.all('/', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+    //res.header('Access-Control-Allow-Origin', 'https://ryabn.github.io');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
+});
 
-//data var
 var playerList = {};
 
-//problem set
 var problemSetCollection = {
     'problem': [
         {
@@ -50,11 +50,11 @@ var problemSetCollection = {
 };
 var problemSet = problemSetCollection['problem'][0];
 
-//print playerList every time api call made and 
 app.get('/', function(req, res){
     parseUserAction(req, res);
+    console.log(JSON.stringify(playerList, null, 4));
 });
-
+ 
 function parseUserAction(req, res){
     var userAction = req.query.getInfo;
     switch(userAction){
@@ -84,9 +84,8 @@ function parseUserAction(req, res){
 function resetGame(req, res){
     var problemNum = playerList[req.query.gamelink]['gameDetails'][5]['problemNum'];
     problemNum += 1;
-    playerList[req.query.gamelink]['gameDetails'][5]['problemNum'] = problemNum;
     problemSet = problemSetCollection['problem'][problemNum];
-    playerList[req.query.gamelink]['gameDetails'][4] = problemSet;
+    playerList[req.query.gamelink]['gameDetails']['problem'] = problemSet;
     playerList[req.query.gamelink]['gameDetails'][2]['completionTime'].fill(emptyTime);
 }
 function createHost(req, res){
@@ -117,7 +116,7 @@ function addPlayer(req, res){
 function startGame(req, res){
     playerList[req.query.gamelink]['gameDetails'][3]['start'] = true;
     problemSet = problemSetCollection['problem'][0];
-    playerList[req.query.gamelink]['gameDetails'].push(problemSet);
+    playerList[req.query.gamelink]['gameDetails']['problem'] = problemSet;
     playerList[req.query.gamelink]['gameDetails'].push({'problemNum': 0});
     res.send(playerList[req.query.gamelink]['gameDetails']);
 }
