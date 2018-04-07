@@ -49,30 +49,19 @@ function updateWaitingRoom(){
         document.getElementById('ishostbutton').innerHTML = 'Waiting for host...';
     }
     updatePlayers = setInterval(function(){
-        xhr.onload = function () {
-            if (xhr.readyState === xhr.DONE) {
-                if (xhr.status === 200) {
-                    var players = JSON.parse(xhr.responseText);
-                    displayWaitingRoom(players);
-                }
-            }
-        };
         var serverCall = url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=players";
-        makeAPICall(serverCall, updateWaitingRoomResponse);
-    }, 800);
-}
-function updateWaitingRoomResponse(serverResp){
-    var players = serverResp;
-    displayWaitingRoom(players);
+        makeAPICall(serverCall, displayWaitingRoom);
+    }, 1000);
 }
 function displayWaitingRoom(serverResp){
-    if(serverResp[3]["start"]){
-        problemSet = serverResp['problem'];
+    if(serverResp[3]['start']){
+        clearInterval(updatePlayers);
+        problemSet = serverResp[5]['problem'];
         playerList = serverResp;
         start();
     }else{
         document.getElementById('waiting-room-display').innerHTML = '<div class="guestNames" style="text-align:center; color: #1f0068"> The game code is: ' + serverResp[0]['gameID'] + '</div>';
-        for(i = 0; i < players[1]['players'].length; i++){
+        for(i = 0; i < serverResp[1]['players'].length; i++){
             document.getElementById('waiting-room-display').innerHTML += '<div class="guestNames">' + serverResp[1]['players'][i] + '</div>';
         }
     }
@@ -85,7 +74,6 @@ function enterGame(){
 }
 function start(){
     document.getElementById('waiting-room').style.display = 'none';
-    clearInterval(updatePlayers);
     parseProblemData();
     startTimer();
     setUpdateTimer();
@@ -165,7 +153,6 @@ function setIncorrect(userInput, userOutput){
 function correctSolution(){
     clearInterval(timer);
     clearInterval(updatePlayers);
-    console.log("yeah you're right");
     var APICall =  url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=complete&completedTime=" + document.getElementById('time').innerHTML;
     makeAPICall(APICall, updateScoreboardResponse);
     setUpdateTimer();
@@ -188,16 +175,11 @@ function updateScoreboardResponse(serverResp){
 }
 function nextGame(){
     setTimeout(function(){
-        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-title"> All players finished! Back to lobby in 5 seconds... </div>';
-    }, 1000);
+        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-title"> All players finished! Back to lobby in 3 seconds... </div>';
+    }, 2000);
     setTimeout(function(){
         document.getElementById('output').innerHTML = '<div class="resultOutput standard"> Output displayed here</div>';
-        if(ishost){
-             xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=newproblem", true);
-        }else{
-            xhr.open("GET", url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=players", true);
-        }
-        xhr.send();  
         updateWaitingRoom();
-    }, 6000);
+        console.log("Next");
+    }, 3000);
 }

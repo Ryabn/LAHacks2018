@@ -73,20 +73,11 @@ function parseUserAction(req, res){
         case 'clearservers':
             playerList = {};
             break;
-        case 'newproblem':
-            resetGame(req, res);
-            break;
+
         default:
             res.send(playerList[req.query.gamelink]['gameDetails']);
             break;
     }
-}
-function resetGame(req, res){
-    var problemNum = playerList[req.query.gamelink]['gameDetails'][5]['problemNum'];
-    problemNum += 1;
-    problemSet = problemSetCollection['problem'][problemNum];
-    playerList[req.query.gamelink]['gameDetails']['problem'] = problemSet;
-    playerList[req.query.gamelink]['gameDetails'][2]['completionTime'].fill(emptyTime);
 }
 function createHost(req, res){
     var randomString = makeid();
@@ -102,6 +93,12 @@ function createHost(req, res){
             },
             {
                 "start": false
+            },
+            {
+                "problemNum": -1
+            },
+            {
+                "problem": "stuff"
             }]
         };
     
@@ -114,10 +111,12 @@ function addPlayer(req, res){
     res.send(playerList[req.query.gamelink]['gameDetails']);
 }
 function startGame(req, res){
+    var level = playerList[req.query.gamelink]['gameDetails'][4]['problemNum'] + 1;
+    playerList[req.query.gamelink]['gameDetails'][4]['problemNum'] = level;
+    problemSet = problemSetCollection['problem'][level];
+    playerList[req.query.gamelink]['gameDetails'][5]['problem'] = problemSet;
     playerList[req.query.gamelink]['gameDetails'][3]['start'] = true;
-    problemSet = problemSetCollection['problem'][0];
-    playerList[req.query.gamelink]['gameDetails']['problem'] = problemSet;
-    playerList[req.query.gamelink]['gameDetails'].push({'problemNum': 0});
+    playerList[req.query.gamelink]['gameDetails'][2]['completionTime'].fill(emptyTime);
     res.send(playerList[req.query.gamelink]['gameDetails']);
 }
 function finishedGame(req, res){
