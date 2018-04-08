@@ -51,7 +51,7 @@ function updateWaitingRoom(){
     updatePlayers = setInterval(function(){
         var serverCall = url + "?gamelink=" + gamelink + "&playerName=" + playerName + "&getInfo=players";
         makeAPICall(serverCall, displayWaitingRoom);
-    }, 1000);
+    }, 1500);
 }
 function displayWaitingRoom(serverResp){
     if(serverResp[3]['start']){
@@ -81,7 +81,7 @@ function start(){
 function setUpdateTimer(){
     updatePlayers = setInterval(function(){
         updateScoreboard();
-    }, 1250);
+    }, 1500);
 }
 function startTimer(){
     var date = Date.now();
@@ -175,7 +175,7 @@ function updateScoreboardResponse(serverResp){
 }
 function nextGame(){
     setTimeout(function(){
-        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-title"> All players finished! Back to lobby in 3 seconds... </div>';
+        document.getElementById('scoreboard').innerHTML += '<div class="scoreboard-title"> All players finished! Going back to lobby ... </div>';
     }, 2000);
     setTimeout(function(){
         document.getElementById('output').innerHTML = '<div class="resultOutput standard"> Output displayed here</div>';
