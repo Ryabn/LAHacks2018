@@ -1,3 +1,9 @@
+###
+# Deactivated!!!
+The server that runs this website has been deactivated because server costs are just too damn high!!
+
+However, all the server code has been posted in this github so if you want to see what this program looks like in action, go ahead and test it out and run it in nodejs.
+###
 # LAHacks2018
 
 Alrightt so I have all this code but I realized I don't even have instructions on how to use this!!!
